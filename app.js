@@ -1,51 +1,19 @@
-
-/**
- * Module dependencies.
- */
-
-var express = require('express');
-
-var app = module.exports = express.createServer();
-
-// Configuration
+var express = require("express"),
+    app     = express.createServer();
+    
+app.get("/", function(req, res) {
+  res.redirect("/index.html");
+});
 
 app.configure(function(){
-  var MemStore = express.session.MemoryStore;
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
-  app.use(app.router);
+  app.use(express.bodyParser());
   app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler()); 
-});
-
-// Routes
-
-app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Home'
-  });
-});
-
-app.get('/about', function(req, res){
-  res.render('about', {
-    title: 'About'
-  });
-});
-
-app.get('/contact', function(req, res){
-  res.render('contact', {
-    title: 'Contact'
-  });
+  app.use(express.errorHandler({
+    dumpExceptions: true, 
+    showStack: true
+  }));
+  app.use(app.router);
 });
 
 // Only listen on $ node app.js
